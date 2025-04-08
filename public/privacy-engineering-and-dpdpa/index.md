@@ -1,7 +1,7 @@
 ---
 title: 'Privacy Engineering and DPDPA'
 date: '2025-04-08'
-spoiler: 'A deep dive into Privacy Engineering. In this blog talks about DPDPA and why privacy engineering is important'
+spoiler: 'A series to deep dive into Privacy Engineering. This part of the blog introduces DPDPA and how emerging technologies in privacy engineering can help organizations to comply to privacy regulations effectively'
 ---
 
 In today's data-driven world, privacy has become a critical concern for individuals, organizations, and governments alike. The `Digital Personal Data Protection Act` (DPDPA) of India is one of the most significant regulatory frameworks aimed at safeguarding personal data and ensuring that organizations handle it responsibly. To comply with such regulations, organizations need to adopt proactive measures to embed privacy into their systems and processes. This is where privacy engineering comes into play.  
