@@ -8,7 +8,7 @@
 }
 
 .markdown p {
-    @apply pb-8;
+    @apply pb-6;
 }
 
 .markdown a {
@@ -24,11 +24,15 @@
 }
 
 .markdown h3 {
-    @apply mt-2 pb-8 text-2xl font-bold;
+    @apply mt-2 pb-4 text-2xl font-bold;
 }
 
 .markdown h4 {
-    @apply mt-2 pb-8 text-xl font-bold;
+    @apply mt-2 pb-4 text-xl font-bold;
+}
+
+.markdown h5 {
+    @apply mt-2 pb-2 text-lg font-bold;
 }
 
 .markdown :not(pre) > code {
@@ -84,10 +88,11 @@
 }
 
 .markdown ul li {
-    margin-bottom: calc(1.75rem / 2);
+    margin-bottom: 1rem;
 }
 
 .markdown ul li ul {
+    margin-top: .5rem;
     padding-left: 2rem;
     list-style: circle;
 }
@@ -107,9 +112,19 @@
 }
 
 .markdown ol {
+    margin-top: 0;
+    padding-bottom: 0;
+    padding-left: 1rem;
+    padding-right: 0;
+    padding-top: 0;
+    margin-bottom: 1rem;
     list-style: decimal;
     list-style-position: outside;
 }
+.markdown ol li {
+    margin-bottom: calc(1.75rem / 2);
+}
+
 
 .markdown pre [data-highlighted-line] {
     margin-left: -16px;
@@ -118,4 +133,15 @@
     background-color: #022a4b;
     display: block;
     padding-right: 1em;
+}
+
+.markdown table td{
+    padding: 0.5rem;
+    font-size: smaller;
+    border: 1px solid #022a4b;
+  }
+.markdown table th {
+  padding: 0.5rem;
+  border: 1px solid var(--inlineCode-text);
+  background-color: var(--inlineCode-bg);
 }

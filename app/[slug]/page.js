@@ -1,24 +1,25 @@
 import { readdir, readFile } from "fs/promises";
 import matter from "gray-matter";
-import { MDXRemote } from "next-mdx-remote/rsc";
+import { MDXRemote } from "next-mdx-remote-client/rsc";
 import Link from "../Link";
 import { sans } from "../fonts";
 import remarkSmartpants from "remark-smartypants";
-import remarkGfm from "remark-gfm";
 import rehypePrettyCode from "rehype-pretty-code";
 import { remarkMdxEvalCodeBlock } from "./mdx.js";
 import overnight from "overnight/themes/Overnight-Slumber.json";
 import "./markdown.css";
+import remarkGfm from "remark-gfm";
 
 overnight.colors["editor.background"] = "var(--code-bg)";
 
 export default async function PostPage({ params }) {
-  const filename = "./public/" + params.slug + "/index.md";
+  const { slug } = await params;
+  const filename = "./public/" + slug + "/index.md";
   const file = await readFile(filename, "utf8");
   let postComponents = {};
   try {
     postComponents = await import(
-      "../../public/" + params.slug + "/components.js"
+      "../../public/" + slug + "/components.js"
     );
   } catch (e) {
     if (!e || e.code !== "MODULE_NOT_FOUND") {
@@ -26,7 +27,7 @@ export default async function PostPage({ params }) {
     }
   }
   const { content, data } = matter(file);
-  const shareOnX = `https://x.com/intent/tweet?text=${encodeURIComponent(data.title)}&url=${encodeURIComponent(`https://suresh-blog.github.io/${params.slug}/`)}`;
+  const shareOnX = `https://x.com/intent/tweet?text=${encodeURIComponent(data.title)}&url=${encodeURIComponent(`https://suresh-blog.github.io/${slug}/`)}`;
   return (
     <article>
       <h1
@@ -49,12 +50,20 @@ export default async function PostPage({ params }) {
           source={content}
           components={{
             a: Link,
+            img: ({ src, ...rest }) => {
+              if (src && !/^https?:\/\//.test(src)) {
+                // https://github.com/gaearon/overreacted.io/issues/827
+                src = `/${slug}/${src}`;
+              }
+              return <img src={src} {...rest} />;
+            },
             ...postComponents,
           }}
           options={{
             mdxOptions: {
               useDynamicImport: true,
               remarkPlugins: [
+                remarkGfm,
                 remarkSmartpants,
                 [remarkMdxEvalCodeBlock, filename],
               ],
@@ -71,7 +80,7 @@ export default async function PostPage({ params }) {
         />
         <hr />
         <p>
-          <Link href={shareOnX}>Share on 𝕏</Link>
+          <Link href={shareOnX}>Discuss on 𝕏</Link>
         </p>
       </div>
     </article>
@@ -87,7 +96,8 @@ export async function generateStaticParams() {
 }
 
 export async function generateMetadata({ params }) {
-  const file = await readFile("./public/" + params.slug + "/index.md", "utf8");
+  const { slug } = await params;
+  const file = await readFile("./public/" + slug + "/index.md", "utf8");
   let { data } = matter(file);
   return {
     title: data.title + " — sureshunnikrishnan",
